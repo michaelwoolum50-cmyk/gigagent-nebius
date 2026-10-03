@@ -29,7 +29,7 @@ Token Factory is what makes the agent shippable: one key, OpenAI-compatible API,
 ## Quick start
 
 ```bash
-git clone https://github.com/SovereignDevs/gigagent-nebius.git
+git clone https://github.com/michaelwoolum50-cmyk/gigagent-nebius.git
 cd gigagent-nebius
 pip install -r requirements.txt
 cp .env.example .env   # put NEBIUS_API_KEY here (or leave empty for mock mode)
