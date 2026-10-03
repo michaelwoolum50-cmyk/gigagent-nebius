@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>GigAgent — Autonomous Gig-Work Agent (NVIDIA Nemotron on Nebius)</title>
+<style>
+body { font-family: system-ui, sans-serif; max-width: 900px; margin: 2em auto; padding: 0 1em; background: #0f172a; color: #e2e8f0; }
+h1 { color: #38bdf8; }
+.badge { background: #164e63; padding: 4px 12px; border-radius: 12px; font-size: 0.85em; }
+.listing { background: #1e293b; border-radius: 8px; padding: 1em; margin: 1em 0; }
+button { background: #0284c7; color: white; border: none; padding: 10px 24px; border-radius: 6px; font-size: 1em; cursor: pointer; }
+button:hover { background: #0369a1; }
+.result { background: #1e293b; border-left: 4px solid #38bdf8; padding: 1em; margin: 1em 0; white-space: pre-wrap; }
+.reject { border-left-color: #ef4444; }
+pre { background: #0f172a; padding: 1em; border-radius: 6px; overflow-x: auto; }
+</style>
+</head>
+<body>
+<h1>🤖 GigAgent</h1>
+<p><span class="badge">Powered by NVIDIA Nemotron on Nebius Token Factory</span>
+<span class="badge">Provider: {{ provider }}</span>
+<span class="badge">Model: {{ model }}</span></p>
+<p>An autonomous agent that finds gig work, screens out scams and paywalls, and drafts truthful proposals — all with AI disclosure.</p>
+<button onclick="runAgent()">▶ Run the Agent</button>
+<div id="output"></div>
+<script>
+async function runAgent() {
+  document.getElementById('output').innerHTML = '<p>Agent working…</p>';
+  const r = await fetch('/api/run', {method: 'POST'});
+  const d = await r.json();
+  let html = '<h2>Results (' + d.provider + ')</h2>';
+  d.results.forEach(x => {
+    html += '<div class="result' + (x.screen === 'REJECT' ? ' reject' : '') + '">';
+    html += '<strong>' + x.title + '</strong> — ' + x.screen;
+    if (x.reason) html += '<br>Reason: ' + x.reason;
+    if (x.proposal) html += '<pre>' + x.proposal.substring(0, 600) + '…</pre>';
+    html += '</div>';
+  });
+  document.getElementById('output').innerHTML = html;
+}
+</script>
+<h2>How it works</h2>
+<ol>
+<li><strong>Screen:</strong> Nemotron checks every listing against the never-pay rule — any payment to apply = instant reject.</li>
+<li><strong>Draft:</strong> For clean listings, Nemotron drafts a truthful proposal with AI disclosure.</li>
+<li><strong>File:</strong> The agent files the application and records a receipt.</li>
+</ol>
+<p><small>Built for the Nebius × NVIDIA Global AI Hackathon — Best Apps &amp; Agents track.</small></p>
+</body>
+</html>
